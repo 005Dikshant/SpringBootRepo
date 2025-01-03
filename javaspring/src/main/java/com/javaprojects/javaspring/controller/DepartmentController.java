@@ -40,4 +40,14 @@ public class DepartmentController {
 
         return departmentService.updateDepartment(departmentID, department);
     }
+
+    @GetMapping("/name/{name}")
+    public Department fetchDepartmentByName(@PathVariable("name") String departmentName){
+        return departmentService.fetchDepartmentByName(departmentName);
+
+    }
+    @GetMapping("/name/ignorecase/{name}")
+    public Department fetchDepartmentByNameIgnoreCase(@PathVariable("name") String departmentName){
+        return departmentService.fetchDepartmentByNameIgonoreCase(departmentName);
+    }
 }

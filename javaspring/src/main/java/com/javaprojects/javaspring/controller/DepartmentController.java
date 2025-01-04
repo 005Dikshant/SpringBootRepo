@@ -1,6 +1,7 @@
 package com.javaprojects.javaspring.controller;
 
 import com.javaprojects.javaspring.entity.Department;
+import com.javaprojects.javaspring.error.DepartmentNotFoundException;
 import com.javaprojects.javaspring.service.DepartmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,19 +32,18 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments/{id}")
-    public Department getListAllDeparmentById(@PathVariable("id") Long departmentID){
+    public Department getListAllDeparmentById(@PathVariable("id") Long departmentID) throws DepartmentNotFoundException {
         return departmentService.getDepartmentById(departmentID);
     }
 
     @DeleteMapping("/departments/{id}")
     public String deleteDepartmentById(@PathVariable("id") Long departmentID){
         departmentService.deleteDepartmentById(departmentID);
-
         return "department deleted successfully";
     }
 
     @PutMapping("/departments/{id}")
-    public Department updateDepartment(@PathVariable("id") Long departmentID,@RequestBody Department department){
+    public Department updateDepartment(@PathVariable("id") Long departmentID,@RequestBody Department department) throws DepartmentNotFoundException {
 
         return departmentService.updateDepartment(departmentID, department);
     }
@@ -51,8 +51,8 @@ public class DepartmentController {
     @GetMapping("/name/{name}")
     public Department fetchDepartmentByName(@PathVariable("name") String departmentName){
         return departmentService.fetchDepartmentByName(departmentName);
-
     }
+
     @GetMapping("/name/ignorecase/{name}")
     public Department fetchDepartmentByNameIgnoreCase(@PathVariable("name") String departmentName){
         return departmentService.fetchDepartmentByNameIgonoreCase(departmentName);

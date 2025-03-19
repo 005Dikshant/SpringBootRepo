@@ -19,8 +19,7 @@ public class GlobalExceptionHandler {
                                           .status(HttpStatus.NOT_FOUND)
                                           .build();
 
-        return new ResponseEntity<>(response,
-                                    HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(UnknownHostException.class)
@@ -32,7 +31,6 @@ public class GlobalExceptionHandler {
                                           .status(HttpStatus.INTERNAL_SERVER_ERROR)
                                           .build();
 
-        return new ResponseEntity<>(response,
-                                    HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

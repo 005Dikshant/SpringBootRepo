@@ -36,45 +36,37 @@ public class UserServiceImpl implements UserService {
         return userRepository.findAll();
     }
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger=LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Override
     public User getUser(String userId) {
-        User user = userRepository.findById(userId)
-                                  .orElseThrow(() -> new ResourceNotFoundException("No user found with this user ID" + userId));
+        User user=userRepository.findById(userId).orElseThrow(
+                () -> new ResourceNotFoundException("No user found with this user ID" + userId));
 
         Rating[] ratingForUsers;
-
         try {
-            ratingForUsers = restTemplate.getForObject("http://RATING-SERVICE/ratings/users/" + userId,
-                                                       Rating[].class);
+            ratingForUsers=restTemplate.getForObject("http://RATING-SERVICE/ratings/users/" + userId, Rating[].class);
         } catch (Exception e) {
-            logger.error("Error while calling rating service",
-                         e);
-            throw new UnknownHostException("Invalid domain name for rating service. Please check the domain name in the URL.");
+            logger.error("Error while calling rating service", e);
+            throw new UnknownHostException(
+                    "Invalid domain name for rating service. Please check the domain name in the URL.");
         }
 
-        List<Rating> listOfRatingForUsers = Arrays.stream(ratingForUsers)
-                                                  .toList();
+        List<Rating> listOfRatingForUsers=Arrays.stream(ratingForUsers).toList();
 
-        List<Rating> ratingList = listOfRatingForUsers.stream()
-                                                      .peek(rating -> {
-                                                          try {
-                                                              ResponseEntity<Hotel> hotelObject =
-                                                                      restTemplate.getForEntity("http://HOTELSERVICE/hotels/" + rating.getHotelId(),
-                                                                                                Hotel.class);
-                                                              Hotel hotel = hotelObject.getBody();
-                                                              rating.setHotel(hotel);
-                                                          } catch (Exception e) {
-                                                              logger.error("Error while calling hotel service",
-                                                                           e);
-                                                              throw new UnknownHostException("Invalid domain name for hotel service. Please check the domain name in the URL.");
-                                                          }
-                                                      })
-                                                      .toList();
-
+        List<Rating> ratingList=listOfRatingForUsers.stream().peek(rating -> {
+            try {
+                ResponseEntity<Hotel> hotelObject=
+                        restTemplate.getForEntity("http://HOTELSERVICE/hotels/" + rating.getHotelId(), Hotel.class);
+                Hotel hotel=hotelObject.getBody();
+                rating.setHotel(hotel);
+            } catch (Exception e) {
+                logger.error("Error while calling hotel service", e);
+                throw new UnknownHostException(
+                        "Invalid domain name for hotel service. Please check the domain name in the URL.");
+            }
+        }).toList();
         user.setRatings(ratingList);
-
         return user;
     }
 }

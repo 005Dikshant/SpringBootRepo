@@ -1,10 +1,7 @@
 package com.dikshant.user.service.entites;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,14 +11,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="micro_users")
+@Builder
+@Table(name = "micro_users")
 public class User {
 
     @Id
-    @Column(name="ID")
+    @Column(name = "ID")
     private String userId;
 
-    @Column(name= "NAME")
+    @Column(name = "NAME")
     private String name;
 
     @Column(name = "EMAIL")
@@ -31,5 +29,5 @@ public class User {
     private String about;
 
     @Transient
-    private List<Rating> ratings = new ArrayList<>();
+    private List<Rating> ratings=new ArrayList<>();
 }

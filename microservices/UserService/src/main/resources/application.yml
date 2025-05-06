@@ -22,13 +22,17 @@ spring:
 
 management:
   health:
-    circuitbreakers:
+    circuit-breakers:
       enabled: true
 
   endpoints:
     web:
       exposure:
         include: health
+
+  endpoint:
+    health:
+      show-details: always
 
 resilience4j:
   circuitbreaker:
